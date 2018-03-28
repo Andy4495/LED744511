@@ -75,7 +75,7 @@ For example:
   + `value = 109` will display a leading 0 and the digit 9: `09`
 
 
-    void lampTest(int onoff);
+        void lampTest(int onoff);
 Enables or disables the /LT (Lamp Test) signal. Since it is an active-low signal, a value of 0 will turn it on, and a value of 1 will turn it off.
 
 This function only has an effect if the LT pin was defined in the constructor.
