@@ -11,7 +11,7 @@ For a single digit, a minimum of 5 output pins are required:
    + BCD bit 1
    + BCD bit 0 (lsb)
    + /LE (Latch Enable)
-   + You can also optionally define the /LE and /BL signals
+   + You can also optionally define the /LT and /BL signals
 
 For two digit setups, a minimum of 6 output pins are required:
 + BCD bit 3 (msb)
@@ -20,7 +20,7 @@ For two digit setups, a minimum of 6 output pins are required:
 + BCD bit 0 (lsb)
 + /LE_1 (Latch Enable for most significant digit)
 + /LE_0 (Latch Enable for least significant digit)
-+ You can also optionally define the /LE and /BL signals
++ You can also optionally define the /LT and /BL signals
 
 Usage
 -----
@@ -36,21 +36,21 @@ Next, create an LED object. There are multiple forms for the constructor, depend
 
     LED744511 myLED(BCD3, BCD2, BCD1, BCD0, BCDLE);
 
-This creates a single-digit 7-segment object which does not control the /LE or /BL pins (they are assumed to be tied high). It uses 5 output pins.
+This creates a single-digit 7-segment object which does not control the /LT or /BL pins (they are assumed to be tied high). It uses 5 output pins.
 
     LED744511 myLED(BCD3, BCD2, BCD1, BCD0, BCDLE, LT, BL);
 
-This creates a single-digit 7-segment object which also controls the /LE and /BL pins. It uses 7 output pins.
+This creates a single-digit 7-segment object which also controls the /LT and /BL pins. It uses 7 output pins.
 
 #### Double Digit ####
 
     LED744511 myLED(BCD3, BCD2, BCD1, BCD0, BCDLE1, BCDLE0);
 
-This creates a two-digit 7-segment object which does not control the /LE or /BL pins (they are assumed to be tied high). It uses 6 output pins. BCDLE1 is the most significant digit (tens) and BCDLE0 is the least significant digit (ones).
+This creates a two-digit 7-segment object which does not control the /LT or /BL pins (they are assumed to be tied high). It uses 6 output pins. BCDLE1 is the most significant digit (tens) and BCDLE0 is the least significant digit (ones).
 
     LED744511 myLED(BCD3, BCD2, BCD1, BCD0, BCDLE1, BCDLE0, LT, BL);
 
-This creates a two-digit 7-segment object which also controls the /LE and /BL pins. It uses 8 output pins.
+This creates a two-digit 7-segment object which also controls the /LT and /BL pins. It uses 8 output pins.
 
 #### Controlling the Displays ####
 
