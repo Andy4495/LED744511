@@ -12,11 +12,13 @@
 */
 /* Version History
    1.0.0    03/28/2018  A.T.   Original
+   1.1.0    05/18/2018  A.T.   Add support for 74HC164 serial to parallel shift register
+                               to decrease I/O pin requirements.
 */
 
 #include "LED744511.h"
 
-
+// LED4511 class member function definitions (parallel interface)
 // Single digit constructors
 LED744511::LED744511(int bcd3, int bcd2, int bcd1, int bcd0, int LE) {
   init(bcd3, bcd2, bcd1, bcd0, NO_PIN, LE, NO_PIN, NO_PIN);
@@ -99,13 +101,13 @@ void LED744511::writeBCD(int value) {
 
 void LED744511::lampTest(int onoff) {
   if (LT_pin != NO_PIN) {
-    pinMode(LT_pin, onoff);
+    digitalWrite(LT_pin, onoff);
   }
 }
 
 void LED744511::blankDisplay(int onoff) {
   if (BL_pin != NO_PIN) {
-    pinMode(BL_pin, onoff);
+    digitalWrite(BL_pin, onoff);
   }
 }
 
@@ -116,4 +118,129 @@ void LED744511::writeDigit(int digit, int n) {
   digitalWrite(bcd0_pin,  n       & 1);
   digitalWrite(LE_pin[digit], LOW);
   digitalWrite(LE_pin[digit], HIGH);
+}
+//---------------------------------------------------------------------//
+// LED4511_Serial class member function definitions (serial interface)
+// Single digit constructors
+LED744511_Serial::LED744511_Serial(int clk, int din, int LE) {
+  init(clk, din, NO_PIN, LE, NO_PIN, NO_PIN, NO_PIN);
+}
+
+LED744511_Serial::LED744511_Serial(int clk, int din, int LE, int clr, int LT, int BL) {
+  init(clk, din, NO_PIN, LE, clr, LT, BL);
+}
+
+// Dual digit constructors
+LED744511_Serial::LED744511_Serial(int clk, int din, int LE_1, int LE_0) {
+  init(clk, din, LE_1, LE_0, NO_PIN, NO_PIN, NO_PIN);
+}
+
+LED744511_Serial::LED744511_Serial(int clk, int din, int LE_1, int LE_0, int clr, int LT, int BL) {
+  init(clk, din, LE_1, LE_0, clr, LT, BL);
+}
+
+void LED744511_Serial::init(int clk, int din, int LE_1, int LE_0, int clr, int LT, int BL) {
+  clk_pin   = clk;
+  din_pin   = din;
+  clr_pin   = clr;
+  LE_pin[1] = LE_1;
+  LE_pin[0] = LE_0;
+  LT_pin    = LT;
+  BL_pin    = BL;
+
+  // Make sure that the control signals are disabled during initialization
+  if (LE_pin[1] != NO_PIN) {
+    digitalWrite(LE_pin[1], HIGH);
+    pinMode(LE_pin[1], OUTPUT);
+  }
+  if (LE_pin[0] != NO_PIN) {
+    digitalWrite(LE_pin[0], HIGH);
+    pinMode(LE_pin[0], OUTPUT);
+  }
+  if (LT_pin != NO_PIN) {
+    digitalWrite(LT_pin, HIGH);
+    pinMode(LT_pin, OUTPUT);
+  }
+  if (BL_pin != NO_PIN) {
+    digitalWrite(BL_pin, HIGH);
+    pinMode(BL_pin, OUTPUT);
+  }
+  if (clr_pin != NO_PIN) {
+    digitalWrite(clr_pin, HIGH);
+    pinMode(clr_pin, OUTPUT);
+  }  // Set up the serial data pins
+  pinMode(clk_pin, OUTPUT);
+  pinMode(din_pin, OUTPUT);
+}
+
+void LED744511_Serial::writeBCD(int value) {
+  // 2 digit displays:
+  //   values between 10 and 99 inclusive: display normally
+  //   values < 10: display leading blank digit
+  //   values > 100: display leading '0' digit
+  //   values < 0: blank display (all segments off)
+  // 1 digit displays:
+  //   values >= 0: display value (modulus 10)
+  //   values < 0: blank display (all segments off)
+  if (LE_pin[1] != NO_PIN) {             // 2 LED digits defined
+    // Values between 10 and 99 includes print normally
+    if ((value < 100) && (value > 9)) {
+      writeSerial(value/10);
+    }
+    // Values < 10 or negative values print a blank leading digit
+    if ((value < 10) || (value < 0)) {
+      writeSerial(LED744511_Serial::BLANK_DIGIT);
+    }
+    // Values > 99 print a zero leading digit, regardless of 10's value
+    if (value > 99) {
+      writeSerial(0);
+    }
+    digitalWrite(LE_pin[1], LOW);
+    digitalWrite(LE_pin[1], HIGH);
+  }
+  // Least significant digit: blank display if < 0
+  if (value < 0) writeSerial(LED744511_Serial::BLANK_DIGIT);
+  else writeSerial(value%10);
+  digitalWrite(LE_pin[0], LOW);
+  digitalWrite(LE_pin[1], HIGH);
+}
+
+void LED744511_Serial::lampTest(int onoff) {
+  if (LT_pin != NO_PIN) {
+    digitalWrite(LT_pin, onoff);
+  }
+}
+
+void LED744511_Serial::blankDisplay(int onoff) {
+  if (BL_pin != NO_PIN) {
+    digitalWrite(BL_pin, onoff);
+  }
+}
+
+void LED744511_Serial::clr74HC164(int onoff) {
+  if (clr_pin != NO_PIN) {
+    digitalWrite(clr_pin, onoff);
+  }
+}
+
+void LED744511_Serial::writeSerial(int value) {
+  digitalWrite(din_pin, value & 0x01);
+  toggle_clk();
+  digitalWrite(din_pin, value & 0x02);
+  toggle_clk();
+  digitalWrite(din_pin, value & 0x04);
+  toggle_clk();
+  digitalWrite(din_pin, value & 0x08);
+  toggle_clk();
+  // Both LED digits are tied to QE, QF, QG, QH, so need to toggle
+  // the clock 4 more times with dummy data
+  toggle_clk();
+  toggle_clk();
+  toggle_clk();
+  toggle_clk();
+}
+
+void LED744511_Serial::toggle_clk() {
+  digitalWrite(clk_pin, LOW);
+  digitalWrite(clk_pin, HIGH);
 }
