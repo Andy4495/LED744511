@@ -148,6 +148,9 @@ void LED744511_Serial::init(int clk, int din, int LE_1, int LE_0, int clr, int L
   LT_pin    = LT;
   BL_pin    = BL;
 
+  DP_ms     = 0;
+  DP_ls     = 0;
+
   // Make sure that the control signals are disabled during initialization
   if (LE_pin[1] != NO_PIN) {
     digitalWrite(LE_pin[1], HIGH);
@@ -223,19 +226,27 @@ void LED744511_Serial::clr74HC164(int onoff) {
   }
 }
 
+void LED744511_Serial::setDP(int ms, int ls) {
+  DP_ms = ms;
+  DP_ls = ls;
+}
+
 void LED744511_Serial::writeSerial(int value) {
-  digitalWrite(din_pin, value & 0x01);
+  digitalWrite(din_pin, value & 0x01);  // QH
   toggle_clk();
-  digitalWrite(din_pin, value & 0x02);
+  digitalWrite(din_pin, value & 0x02);  // QG
   toggle_clk();
-  digitalWrite(din_pin, value & 0x04);
+  digitalWrite(din_pin, value & 0x04);  // QF
   toggle_clk();
-  digitalWrite(din_pin, value & 0x08);
+  digitalWrite(din_pin, value & 0x08);  // QE
   toggle_clk();
-  // Both LED digits are tied to QE, QF, QG, QH, so need to toggle
-  // the clock 4 more times with dummy data
+  // Both LED digits are tied to QE, QF, QG, QH
+  // QD and QC may be connected to Decimal Point control lines
+  digitalWrite(din_pin, DP_ms);   // QD tied to most signicant decimal point
   toggle_clk();
+  digitalWrite(din_pin, DP_ls);   // QC tied to least significant decimal point
   toggle_clk();
+  // QB and QA assumed not connected, but need to clock in dummy data
   toggle_clk();
   toggle_clk();
 }

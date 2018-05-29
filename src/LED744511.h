@@ -67,6 +67,8 @@ public:
   void blankDisplay(int onoff);
   void clr74HC164(int onoff);
 
+  void setDP(int ms, int ls);
+
   enum {NO_PIN=255};
 
 private:
@@ -77,6 +79,8 @@ private:
   int LE_pin[2];
   int LT_pin;
   int BL_pin;
+  int DP_ms;   // Most significant decimal point status
+  int DP_ls;   // Least significant decimial point status
   void init(int clk, int din, int LE_1, int LE_0, int clr, int LT, int BL);
   void writeSerial(int digit);
   void toggle_clk();

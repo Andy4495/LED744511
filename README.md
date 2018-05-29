@@ -52,7 +52,11 @@ For two digit setups, a minimum of 4 output pins are required:
 + /LE_0 (Latch Enable for least significant digit)
 + You can also optionally define the /CLR ('164), /LT ('4511) and /BL ('4511) signals
 
+Decimal Points
+--------------
+In the serial configuration, it is possible to control the decimal points (8th segment) of the LED displays by using the unused output pins on the 74HC164 chip. Connect QD to the most significant decimal point driver signal and QC to the least significant decimal point driver signal. Note that both decimal point driver signals need current-limiting resistors, just like all the other LED segments controlled by the '4511 BCD chip.
 
+To control the decimal points, first store the values with the `setDP(ms, ls)` method, and then call `writeBCD()` to send the values out the shift register and change the decimal point control lines.
 
 Usage
 -----
@@ -120,6 +124,9 @@ Once you have created an LED744511 or LED744511_Serial object, the following met
   + To display a leading blank, then use a value less than 10.
   + To display a leading zero, then use a value greater than 99.
 
+
+  This command will also change the decimal point control signals if QD and QC are connected to the decimal point control lines. See `setDP()` below.
+
 For example:
   + `value = -1` will blank both digits of the display (all segments off)
   + `value = 9` will display a leading blank and the digit 9: ` 9`
@@ -141,6 +148,10 @@ This function only has an effect if the BL pin was defined in the constructor.
 Enables or disables the /CLR (register clear) signal on the '164 chip. Since it is an active-low signal, a value of 0 will turn it on, and a value of 1 will turn it off.
 
 This method is only available in the LED744511_Serial object, and only has an effect if the CLR pin was defined in the constructor.
+
+    void setDP(int ms, int ls);  
+This method sets the most signifcant (ms) and least significant (ls) decimal point stored values when using the LED744511_Serial object type (the values default to zero when an instance is created). This command does not change the decimal point control signals itself. You must follow this with a `writeBCD()` to actually change the decimal point signal levels.
+
 
 References
 ----------
