@@ -150,7 +150,7 @@ Enables or disables the /CLR (register clear) signal on the '164 chip. Since it 
 This method is only available in the LED744511_Serial object, and only has an effect if the CLR pin was defined in the constructor.
 
     void setDP(int ms, int ls);  
-This method sets the most signifcant (ms) and least significant (ls) decimal point stored values when using the LED744511_Serial object type (the values default to zero when an instance is created). This command does not change the decimal point control signals itself. You must follow this with a `writeBCD()` to actually change the decimal point signal levels.
+This method sets the most significant (ms) and least significant (ls) decimal point stored values when using the LED744511_Serial object type (the values default to zero when an instance is created). This command does not change the decimal point control signals itself. You must follow this with a `writeBCD()` to actually change the decimal point signal levels.
 
 
 References
