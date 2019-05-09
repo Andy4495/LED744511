@@ -86,12 +86,12 @@ void LED744511::writeBCD(int value) {
       writeDigit(1, value/10);
     }
     // Values < 10 or negative values print a blank leading digit
-    if ((value < 10) || (value < 0)) {
+    if (value < 10) {
       writeDigit(1, LED744511::BLANK_DIGIT);
     }
-    // Values > 99 print a zero leading digit, regardless of 10's value
+    // Values > 99 print a zero leading digit when necessary
     if (value > 99) {
-      writeDigit(1, 0);
+      writeDigit(1, (value / 10) % 10);
     }
   }
   // Least significant digit: blank display if < 0
@@ -112,10 +112,10 @@ void LED744511::blankDisplay(int onoff) {
 }
 
 void LED744511::writeDigit(int digit, int n) {
-  digitalWrite(bcd3_pin, (n >> 3) & 1);
-  digitalWrite(bcd2_pin, (n >> 2) & 1);
-  digitalWrite(bcd1_pin, (n >> 1) & 1);
-  digitalWrite(bcd0_pin,  n       & 1);
+  digitalWrite(bcd3_pin, n & 8);
+  digitalWrite(bcd2_pin, n & 4);
+  digitalWrite(bcd1_pin, n & 2);
+  digitalWrite(bcd0_pin, n & 1);
   digitalWrite(LE_pin[digit], LOW);
   digitalWrite(LE_pin[digit], HIGH);
 }
@@ -191,12 +191,12 @@ void LED744511_Serial::writeBCD(int value) {
       writeSerial(value/10);
     }
     // Values < 10 or negative values print a blank leading digit
-    if ((value < 10) || (value < 0)) {
+    if (value < 10) {
       writeSerial(LED744511_Serial::BLANK_DIGIT);
     }
-    // Values > 99 print a zero leading digit, regardless of 10's value
+    // Values > 99 print a zero leading zero if necessary
     if (value > 99) {
-      writeSerial(0);
+      writeSerial((value / 10) % 10);
     }
     digitalWrite(LE_pin[1], LOW);
     digitalWrite(LE_pin[1], HIGH);
@@ -205,7 +205,7 @@ void LED744511_Serial::writeBCD(int value) {
   if (value < 0) writeSerial(LED744511_Serial::BLANK_DIGIT);
   else writeSerial(value%10);
   digitalWrite(LE_pin[0], LOW);
-  digitalWrite(LE_pin[1], HIGH);
+  digitalWrite(LE_pin[0], HIGH);
 }
 
 void LED744511_Serial::lampTest(int onoff) {

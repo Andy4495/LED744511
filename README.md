@@ -122,7 +122,7 @@ Once you have created an LED744511 or LED744511_Serial object, the following met
   For two-digit displays, there is a mechanism to display a leading blank or leading zero for values less than 10.
 
   + To display a leading blank, then use a value less than 10.
-  + To display a leading zero, then use a value greater than 99.
+  + To display a leading zero, then use a value from 100 to 109.
 
 
   This command will also change the decimal point control signals if QD and QC are connected to the decimal point control lines. See `setDP()` below.
