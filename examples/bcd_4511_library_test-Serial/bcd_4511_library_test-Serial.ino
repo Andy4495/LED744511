@@ -2,7 +2,7 @@
  * interface with 74'4511 BCD to 7-segment LED driver chip
  * using 74HC164 serial-to-parallel shift register
 
-   https://gitlab.com/Andy4495/LED744511
+   https://github.com/Andy4495/LED744511
 
 */
 /* Version History
@@ -39,5 +39,3 @@ void loop() {
     delay(1000);
   }
 }
-
-

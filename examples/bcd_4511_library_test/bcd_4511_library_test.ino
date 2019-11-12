@@ -1,7 +1,7 @@
 /* Example sketch using the LED744511 library to 
  * interface with 74'4511 BCD to 7-segment LED driver chip.
 
-   https://gitlab.com/Andy4495/LED744511
+   https://github.com/Andy4495/LED744511
 
 */
 /* Version History
@@ -37,5 +37,3 @@ void loop() {
     delay(1000);
   }
 }
-
-

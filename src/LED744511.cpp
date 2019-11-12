@@ -1,6 +1,6 @@
 /* Library to interface with 74'4511 BCD to 7-segment LED driver chip.
 
-   https://gitlab.com/Andy4495/LED744511
+   https://github.com/Andy4495/LED744511
 
    The library supports either 1 or 2 7-segment displays.
    For a single digit, a minimum of 5 output pins are required:
