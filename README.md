@@ -5,7 +5,7 @@ This library for Arduino or Energia is designed to interface with the 74'4511 BC
 
 The library supports either one or two 7-segment displays.
 
-A reference design which can be used with the library is available in the [hardware][1] folder.
+A reference design which can be used with the library is available in the [extras/hardware][1] folder.
 
 Parallel-only Configuration
 ---------------------------
@@ -159,4 +159,4 @@ References
 + 74HC1164 [Datasheet](http://www.ti.com/lit/ds/symlink/sn74hc164.pdf)
 + Reference [design][1]
 
-[1]: ./hardware
+[1]: ./extras/hardware
