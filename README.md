@@ -159,4 +159,10 @@ References
 + 74HC1164 [Datasheet](http://www.ti.com/lit/ds/symlink/sn74hc164.pdf)
 + Reference [design][1]
 
+License
+-------
+The software and other files in this repository are released under what is commonly called the [MIT License][100]. See the file [`LICENSE`][101] in this repository.
+
 [1]: ./extras/hardware
+[100]: https://choosealicense.com/licenses/mit/
+[101]: ./LICENSE
