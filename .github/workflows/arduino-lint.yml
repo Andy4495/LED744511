@@ -1,4 +1,5 @@
 # From: https://github.com/marketplace/actions/arduino-arduino-lint-action
+name: Arduino Lint
 
 on:
   push:
@@ -14,4 +15,3 @@ jobs:
           library-manager: update
           compliance: strict
           verbose: true
-          
