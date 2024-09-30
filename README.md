@@ -1,7 +1,7 @@
 # 74'4511 BCD to 7-Segment LED Library
 
 [![Arduino Compile Sketches](https://github.com/Andy4495/LED744511/actions/workflows/arduino-compile-sketches.yml/badge.svg)](https://github.com/Andy4495/LED744511/actions/workflows/arduino-compile-sketches.yml)
-[![Check Markdown Links](https://github.com/Andy4495/LED744511/actions/workflows/CheckMarkdownLinks.yml/badge.svg)](https://github.com/Andy4495/LED744511/actions/workflows/CheckMarkdownLinks.yml)
+[![Check Markdown Links](https://github.com/Andy4495/LED744511/actions/workflows/check-links.yml/badge.svg)](https://github.com/Andy4495/LED744511/actions/workflows/check-links.yml)
 [![Arduino Lint](https://github.com/Andy4495/LED744511/actions/workflows/arduino-lint.yml/badge.svg)](https://github.com/Andy4495/LED744511/actions/workflows/arduino-lint.yml)
 
 This library for Arduino or Energia is designed to interface with the 74'4511 BCD to Seven Segment LED driver chip. The library also supports the use of an optional 74HC164 parallel out serial shift register to reduce output pin requirements.
